@@ -2,14 +2,28 @@ import streamlit as st
 import pandas as pd
 import joblib
 import plotly.express as px
+import os
 
 st.set_page_config(page_title="Churn Predictor", layout="wide")
 st.title("📊 Telco Customer Churn Predictor")
 
-# Load model
-model = joblib.load('../models/churn_model.pkl')
-scaler = joblib.load('../models/scaler.pkl')
-features = joblib.load('../models/feature_names.pkl')
+# Get the correct paths (works locally AND on Streamlit Cloud)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_dir = os.path.dirname(current_dir)
+
+# Load model with error handling
+try:
+    model_path = os.path.join(project_dir, 'models', 'churn_model.pkl')
+    scaler_path = os.path.join(project_dir, 'models', 'scaler.pkl')
+    features_path = os.path.join(project_dir, 'models', 'feature_names.pkl')
+    
+    model = joblib.load(model_path)
+    scaler = joblib.load(scaler_path)
+    features = joblib.load(features_path)
+    st.success("✅ Model loaded successfully!")
+except Exception as e:
+    st.error(f"Error loading model: {e}")
+    st.stop()
 
 st.markdown("### Enter customer details to predict churn risk")
 
@@ -28,7 +42,7 @@ with col2:
     gender = st.selectbox("Gender", ["Male", "Female"])
 
 # Calculate features
-num_services = 3  # simplified
+num_services = 3
 avg_monthly = total_charges / (tenure + 1)
 
 if st.button("🔮 Predict Churn Risk"):
