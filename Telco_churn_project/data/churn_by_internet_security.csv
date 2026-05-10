@@ -1,0 +1,6 @@
+InternetService,OnlineSecurity,ChurnRate,CustomerCount
+DSL,No,0.27983870967741936,1240
+DSL,Yes,0.09523809523809523,1176
+Fiber optic,No,0.4935755427558706,2257
+Fiber optic,Yes,0.21811680572109654,839
+No,No internet service,0.07434210526315789,1520
